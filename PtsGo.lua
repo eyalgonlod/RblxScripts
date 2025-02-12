@@ -51,11 +51,31 @@ local function toggleFunction(button, id, amount)
     end
 end
 
+-- Modify Boost Bundle button behavior
+buttons.BoostBundle.MouseButton1Click:Connect(function()
+    running["BoostBundle"] = not running["BoostBundle"]
+    buttons.BoostBundle.Text = running["BoostBundle"] and "Stop Boost Bundle" or "Boost Bundle"
+    buttons.BoostBundle.BackgroundColor3 = running["BoostBundle"] and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
+    
+    if running["BoostBundle"] then
+        task.spawn(function()
+            while running["BoostBundle"] do
+                -- Execute the Boost Bundle action repeatedly
+                local args5 = {
+                    [1] = "a136a7ba64bb4395bb99a6de8fe20c99", -- Bundle for boosts
+                    [2] = 50  -- Amount
+                }
+                game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
+                task.wait(0.01)
+            end
+        end)
+    end
+end)
+
 -- Add button click events to handle the toggles
 buttons.BasicChest.MouseButton1Click:Connect(function() toggleFunction(buttons.BasicChest, "d2f11dcd329c4512a1963d9e016b255e", 1) end)
 buttons.RareChest.MouseButton1Click:Connect(function() toggleFunction(buttons.RareChest, "0fed0d87569b48058effcc67f49e4447", 1) end)
 buttons.EpicChest.MouseButton1Click:Connect(function() toggleFunction(buttons.EpicChest, "edb8b4dfd9a347669c5072c12e65df1a", 1) end)
-buttons.BoostBundle.MouseButton1Click:Connect(function() toggleFunction(buttons.BoostBundle, "a136a7ba64bb4395bb99a6de8fe20c99", 50) end)
 
 -- Add events for Eggs and Valentine buttons
 buttons.Eggs.MouseButton1Click:Connect(function()
@@ -88,4 +108,4 @@ buttons.Valentine.MouseButton1Click:Connect(function()
     end
 end)
 
-print("GUI with buttons should be visible now.")
+print("GUI with Boost Bundle functionality should now work.")

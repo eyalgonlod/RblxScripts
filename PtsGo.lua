@@ -5,7 +5,6 @@ local playerGui = player:WaitForChild("PlayerGui")
 -- Create ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = playerGui
-ScreenGui.Visible = true  -- Make sure it's visible
 
 -- Create a frame to allow dragging
 local GuiFrame = Instance.new("Frame")

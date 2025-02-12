@@ -5,7 +5,7 @@ ScreenGui.Parent = game:GetService("CoreGui")
 -- Create a black frame to hold all buttons
 local GuiFrame = Instance.new("Frame")
 GuiFrame.Parent = ScreenGui
-GuiFrame.Size = UDim2.new(0, 200, 0, 300)  -- Adjusted the size for fewer buttons and more spacing
+GuiFrame.Size = UDim2.new(0, 200, 0, 360)  -- Adjusted the size for more space between buttons
 GuiFrame.Position = UDim2.new(1, -210, 0.1, 0)  -- Position the frame on the right side
 GuiFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Black background color
 
@@ -25,11 +25,11 @@ end
 -- Create the remaining buttons with more space between them
 local buttons = {
     BoostBundle = createButton("BoostBundle", 0.1, "Boost Bundle"),
-    Eggs = createButton("Eggs", 0.25, "Roll Eggs"),
-    Valentine = createButton("Valentine", 0.4, "Valentine Event")
+    Eggs = createButton("Eggs", 0.3, "Roll Eggs"),
+    Valentine = createButton("Valentine", 0.5, "Valentine Event")
 }
 
--- Boost Bundle button function
+-- Boost Bundle button function (updated args)
 buttons.BoostBundle.MouseButton1Click:Connect(function()
     local runningBoost = true
     buttons.BoostBundle.Text = "Stop Boost Bundle"
@@ -38,7 +38,7 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
     task.spawn(function()
         while runningBoost do
             local args5 = {
-                [1] = "c803ac39dd9f4a5089de40ba8b228eed", -- Bundle for boosts
+                [1] = "c803ac39dd9f4a5089de40ba8b228eed", -- New Boost Bundle args
                 [2] = 5  -- Amount
             }
             game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))

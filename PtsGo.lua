@@ -1,45 +1,54 @@
 local ScreenGui = Instance.new("ScreenGui")
-local ToggleLootButton = Instance.new("TextButton")
+local ToggleBundleButton = Instance.new("TextButton")
 local ToggleEggsButton = Instance.new("TextButton")
 local ToggleValentineButton = Instance.new("TextButton")
-local RunningLoot = false
+local RunningBundle = false
 local RunningEggs = false
 local RunningValentine = false
 
 ScreenGui.Parent = game:GetService("CoreGui")
 
-ToggleLootButton.Parent = ScreenGui
-ToggleLootButton.Size = UDim2.new(0, 150, 0, 40) -- Smaller button
-ToggleLootButton.Position = UDim2.new(0, 10, 0.1, 0) -- Left side
-ToggleLootButton.Text = "Start Loot Boxes"
-ToggleLootButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+-- Make the GUI movable
+ScreenGui.Draggable = true
+
+ToggleBundleButton.Parent = ScreenGui
+ToggleBundleButton.Size = UDim2.new(0, 150, 0, 40) -- Smaller button
+ToggleBundleButton.Position = UDim2.new(0, 10, 0.1, 0) -- Left side
+ToggleBundleButton.Text = "Start Bundle Openings"
+ToggleBundleButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0) -- Orange color
+ToggleBundleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 ToggleEggsButton.Parent = ScreenGui
 ToggleEggsButton.Size = UDim2.new(0, 150, 0, 40)
 ToggleEggsButton.Position = UDim2.new(0, 10, 0.2, 0)
 ToggleEggsButton.Text = "Start Rolling Eggs"
-ToggleEggsButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+ToggleEggsButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0) -- Orange color
+ToggleEggsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 ToggleValentineButton.Parent = ScreenGui
 ToggleValentineButton.Size = UDim2.new(0, 150, 0, 40)
 ToggleValentineButton.Position = UDim2.new(0, 10, 0.3, 0)
 ToggleValentineButton.Text = "Start Valentines Event"
-ToggleValentineButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+ToggleValentineButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0) -- Orange color
+ToggleValentineButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-local function openLootboxes()
-    while RunningLoot do
-        local argsList = {
-            {"d2f11dcd329c4512a1963d9e016b255e", 1},
-            {"0fed0d87569b48058effcc67f49e4447", 1},
-            {"edb8b4dfd9a347669c5072c12e65df1a", 1},
-            {"dd0ad0cfe5524a62bbb1eed27208d1e3", 50},
-            {"a136a7ba64bb4395bb99a6de8fe20c99", 50}
+local function openBundles()
+    while RunningBundle do
+        -- Bundle of scrolls
+        local args4 = {
+            [1] = "dd0ad0cfe5524a62bbb1eed27208d1e3",
+            [2] = 50
         }
-        
-        for _, args in ipairs(argsList) do
-            game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args))
-            task.wait(0.01)
-        end
+        game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args4))
+        task.wait(0.01)
+
+        -- Bundle of boosts
+        local args5 = {
+            [1] = "a136a7ba64bb4395bb99a6de8fe20c99",
+            [2] = 50
+        }
+        game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
+        task.wait(0.01)
     end
 end
 
@@ -58,20 +67,20 @@ local function rollValentine()
     end
 end
 
-ToggleLootButton.MouseButton1Click:Connect(function()
-    RunningLoot = not RunningLoot
-    ToggleLootButton.Text = RunningLoot and "Stop Loot Boxes" or "Start Loot Boxes"
-    ToggleLootButton.BackgroundColor3 = RunningLoot and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
+ToggleBundleButton.MouseButton1Click:Connect(function()
+    RunningBundle = not RunningBundle
+    ToggleBundleButton.Text = RunningBundle and "Stop Bundle Openings" or "Start Bundle Openings"
+    ToggleBundleButton.BackgroundColor3 = RunningBundle and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
     
-    if RunningLoot then
-        task.spawn(openLootboxes)
+    if RunningBundle then
+        task.spawn(openBundles)
     end
 end)
 
 ToggleEggsButton.MouseButton1Click:Connect(function()
     RunningEggs = not RunningEggs
     ToggleEggsButton.Text = RunningEggs and "Stop Rolling Eggs" or "Start Rolling Eggs"
-    ToggleEggsButton.BackgroundColor3 = RunningEggs and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
+    ToggleEggsButton.BackgroundColor3 = RunningEggs and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
     
     if RunningEggs then
         task.spawn(rollEggs)
@@ -81,7 +90,7 @@ end)
 ToggleValentineButton.MouseButton1Click:Connect(function()
     RunningValentine = not RunningValentine
     ToggleValentineButton.Text = RunningValentine and "Stop Valentines Event" or "Start Valentines Event"
-    ToggleValentineButton.BackgroundColor3 = RunningValentine and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
+    ToggleValentineButton.BackgroundColor3 = RunningValentine and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
     
     if RunningValentine then
         task.spawn(rollValentine)

@@ -2,17 +2,16 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Create ScreenGui
+-- Create ScreenGui and parent it directly to CoreGui for better visibility in exploits
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = playerGui  -- Parent it directly to the PlayerGui
+ScreenGui.Parent = game:GetService("CoreGui")  -- Parent it directly to CoreGui
 
--- Create a frame to allow dragging
+-- Create a frame for the GUI panel (no draggable functionality)
 local GuiFrame = Instance.new("Frame")
 GuiFrame.Parent = ScreenGui
-GuiFrame.Size = UDim2.new(0, 200, 0, 200)  -- Size of the frame
-GuiFrame.Position = UDim2.new(0, 10, 0.1, 0)  -- Position on the screen
+GuiFrame.Size = UDim2.new(0, 250, 0, 200)  -- Mid size of the frame
+GuiFrame.Position = UDim2.new(0, -260, 0.1, 0)  -- Position on the right side of the screen
 GuiFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Black color
-GuiFrame.Draggable = true  -- Enable dragging
 
 -- Create Buttons inside the frame
 local ToggleBundleButton = Instance.new("TextButton")
@@ -26,22 +25,22 @@ local RunningValentine = false
 
 -- Set up the buttons
 ToggleBundleButton.Parent = GuiFrame
-ToggleBundleButton.Size = UDim2.new(0, 150, 0, 40)
-ToggleBundleButton.Position = UDim2.new(0, 10, 0.1, 0)
+ToggleBundleButton.Size = UDim2.new(0, 200, 0, 40)
+ToggleBundleButton.Position = UDim2.new(0, 25, 0.1, 0)
 ToggleBundleButton.Text = "Start Bundle Openings"
 ToggleBundleButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- Orange color
 ToggleBundleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 ToggleEggsButton.Parent = GuiFrame
-ToggleEggsButton.Size = UDim2.new(0, 150, 0, 40)
-ToggleEggsButton.Position = UDim2.new(0, 10, 0.2, 0)
+ToggleEggsButton.Size = UDim2.new(0, 200, 0, 40)
+ToggleEggsButton.Position = UDim2.new(0, 25, 0.2, 0)
 ToggleEggsButton.Text = "Start Rolling Eggs"
 ToggleEggsButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- Orange color
 ToggleEggsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 ToggleValentineButton.Parent = GuiFrame
-ToggleValentineButton.Size = UDim2.new(0, 150, 0, 40)
-ToggleValentineButton.Position = UDim2.new(0, 10, 0.3, 0)
+ToggleValentineButton.Size = UDim2.new(0, 200, 0, 40)
+ToggleValentineButton.Position = UDim2.new(0, 25, 0.3, 0)
 ToggleValentineButton.Text = "Start Valentines Event"
 ToggleValentineButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- Orange color
 ToggleValentineButton.TextColor3 = Color3.fromRGB(255, 255, 255)

@@ -2,11 +2,11 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Create ScreenGui and parent it directly to CoreGui for better visibility in exploits
+-- Create ScreenGui and parent it directly to PlayerGui
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = game:GetService("CoreGui")  -- Parent it directly to CoreGui
+ScreenGui.Parent = playerGui  -- Parent it to PlayerGui for better visibility
 
--- Create a frame for the GUI panel (no draggable functionality)
+-- Create a frame for the GUI panel
 local GuiFrame = Instance.new("Frame")
 GuiFrame.Parent = ScreenGui
 GuiFrame.Size = UDim2.new(0, 250, 0, 200)  -- Mid size of the frame

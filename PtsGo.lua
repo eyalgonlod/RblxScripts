@@ -6,7 +6,8 @@ local RunningBundle = false
 local RunningEggs = false
 local RunningValentine = false
 
-ScreenGui.Parent = game:GetService("CoreGui")
+-- Make the GUI appear in PlayerGui
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Make the GUI movable
 ScreenGui.Draggable = true

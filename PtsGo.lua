@@ -53,7 +53,7 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
             local boostId = getBoostBundleId()  -- Fetch the dynamic Boost ID
             local args5 = {
                 [1] = boostId,  -- Use dynamic Boost ID
-                [2] = 5  -- Amount
+                [2] = 50  -- Amount
             }
             game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
             task.wait(0.01)
@@ -109,5 +109,3 @@ buttons.Valentine.MouseButton1Click:Connect(function()
         buttons.Valentine.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
     end)
 end)
-
-print("GUI with Boost Bundle functionality should now work.")

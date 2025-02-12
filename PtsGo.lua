@@ -1,44 +1,53 @@
--- This should be a LocalScript under StarterPlayerScripts or StarterCharacterScripts
+-- Ensure the script is executed in the player's environment
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
 
+-- Create ScreenGui
 local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = playerGui
+ScreenGui.Visible = true  -- Make sure it's visible
+
+-- Create a frame to allow dragging
+local GuiFrame = Instance.new("Frame")
+GuiFrame.Parent = ScreenGui
+GuiFrame.Size = UDim2.new(0, 200, 0, 200)  -- Size of the frame
+GuiFrame.Position = UDim2.new(0, 10, 0.1, 0)  -- Position on the screen
+GuiFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Black color
+GuiFrame.Draggable = true  -- Enable dragging
+
+-- Create Buttons inside the frame
 local ToggleBundleButton = Instance.new("TextButton")
 local ToggleEggsButton = Instance.new("TextButton")
 local ToggleValentineButton = Instance.new("TextButton")
+
+-- Initialize button states
 local RunningBundle = false
 local RunningEggs = false
 local RunningValentine = false
 
--- Ensure the script is running under PlayerGui
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-
-ScreenGui.Parent = playerGui
-ScreenGui.Visible = true  -- Make sure the GUI is visible
-
--- Make the GUI movable
-ScreenGui.Draggable = true
-
-ToggleBundleButton.Parent = ScreenGui
-ToggleBundleButton.Size = UDim2.new(0, 150, 0, 40) -- Smaller button
-ToggleBundleButton.Position = UDim2.new(0, 10, 0.1, 0) -- Left side
+-- Set up the buttons
+ToggleBundleButton.Parent = GuiFrame
+ToggleBundleButton.Size = UDim2.new(0, 150, 0, 40)
+ToggleBundleButton.Position = UDim2.new(0, 10, 0.1, 0)
 ToggleBundleButton.Text = "Start Bundle Openings"
-ToggleBundleButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0) -- Orange color
+ToggleBundleButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- Orange color
 ToggleBundleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-ToggleEggsButton.Parent = ScreenGui
+ToggleEggsButton.Parent = GuiFrame
 ToggleEggsButton.Size = UDim2.new(0, 150, 0, 40)
 ToggleEggsButton.Position = UDim2.new(0, 10, 0.2, 0)
 ToggleEggsButton.Text = "Start Rolling Eggs"
-ToggleEggsButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0) -- Orange color
+ToggleEggsButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- Orange color
 ToggleEggsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-ToggleValentineButton.Parent = ScreenGui
+ToggleValentineButton.Parent = GuiFrame
 ToggleValentineButton.Size = UDim2.new(0, 150, 0, 40)
 ToggleValentineButton.Position = UDim2.new(0, 10, 0.3, 0)
 ToggleValentineButton.Text = "Start Valentines Event"
-ToggleValentineButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0) -- Orange color
+ToggleValentineButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- Orange color
 ToggleValentineButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+-- Bundle opening function
 local function openBundles()
     while RunningBundle do
         -- Bundle of scrolls
@@ -47,7 +56,7 @@ local function openBundles()
             [2] = 50
         }
         game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args4))
-        task.wait(0.01)
+        wait(0.01)
 
         -- Bundle of boosts
         local args5 = {
@@ -55,25 +64,28 @@ local function openBundles()
             [2] = 50
         }
         game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
-        task.wait(0.01)
+        wait(0.01)
     end
 end
 
+-- Egg rolling function
 local function rollEggs()
     while RunningEggs do
         game:GetService("ReplicatedStorage").Network.Eggs_Roll:InvokeServer()
-        task.wait(0.02)
+        wait(0.02)
     end
 end
 
+-- Valentine event function
 local function rollValentine()
     while RunningValentine do
         local argsValentine = {"Valentines"}
         game:GetService("ReplicatedStorage").Network.Board_Roll:InvokeServer(unpack(argsValentine))
-        task.wait(0.2)
+        wait(0.2)
     end
 end
 
+-- Button connections
 ToggleBundleButton.MouseButton1Click:Connect(function()
     RunningBundle = not RunningBundle
     ToggleBundleButton.Text = RunningBundle and "Stop Bundle Openings" or "Start Bundle Openings"
@@ -105,4 +117,4 @@ ToggleValentineButton.MouseButton1Click:Connect(function()
 end)
 
 -- Debugging
-print("Script loaded successfully.")
+print("GUI script loaded successfully.")

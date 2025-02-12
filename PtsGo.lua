@@ -38,7 +38,7 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
     task.spawn(function()
         while runningBoost do
             local args5 = {
-                [1] = "a136a7ba64bb4395bb99a6de8fe20c99", -- Bundle for boosts
+                [1] = "c803ac39dd9f4a5089de40ba8b228eed", -- Bundle for boosts
                 [2] = 5  -- Amount
             }
             game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))

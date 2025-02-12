@@ -53,7 +53,7 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
             local boostId = getBoostBundleId()  -- Fetch the dynamic Boost ID
             local args5 = {
                 [1] = boostId,  -- Use dynamic Boost ID
-                [2] = 5  -- Amount
+                [2] = 50  -- Amount
             }
             game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
             task.wait(0.01)

@@ -5,7 +5,7 @@ ScreenGui.Parent = game:GetService("CoreGui")
 -- Create a black frame to hold all buttons
 local GuiFrame = Instance.new("Frame")
 GuiFrame.Parent = ScreenGui
-GuiFrame.Size = UDim2.new(0, 200, 0, 360)  -- Adjusted the size for more space between buttons
+GuiFrame.Size = UDim2.new(0, 200, 0, 360)  -- Set the size of the frame
 GuiFrame.Position = UDim2.new(1, -210, 0.1, 0)  -- Position the frame on the right side
 GuiFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Black background color
 
@@ -22,14 +22,27 @@ local function createButton(name, position, text)
     return button
 end
 
--- Create the remaining buttons with more space between them
+-- Create all the buttons
 local buttons = {
     BoostBundle = createButton("BoostBundle", 0.1, "Boost Bundle"),
-    Eggs = createButton("Eggs", 0.3, "Roll Eggs"),
-    Valentine = createButton("Valentine", 0.5, "Valentine Event")
+    Eggs = createButton("Eggs", 0.2, "Roll Eggs"),
+    Valentine = createButton("Valentine", 0.3, "Valentine Event")
 }
 
--- Boost Bundle button function (updated args)
+-- Function to dynamically retrieve the Boost ID
+local function getBoostBundleId()
+    local networkService = game:GetService("ReplicatedStorage").Network
+    local boostFolder = networkService:FindFirstChild("BoostBundles")  -- Replace with the correct location if necessary
+    if boostFolder then
+        local boostId = boostFolder:FindFirstChild("CurrentBoostId")
+        if boostId then
+            return boostId.Value  -- Dynamically return the current Boost ID
+        end
+    end
+    return "defaultBoostId"  -- Fallback if ID is not found
+end
+
+-- Boost Bundle button function
 buttons.BoostBundle.MouseButton1Click:Connect(function()
     local runningBoost = true
     buttons.BoostBundle.Text = "Stop Boost Bundle"
@@ -37,8 +50,9 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
 
     task.spawn(function()
         while runningBoost do
+            local boostId = getBoostBundleId()  -- Fetch the dynamic Boost ID
             local args5 = {
-                [1] = "c803ac39dd9f4a5089de40ba8b228eed", -- New Boost Bundle args
+                [1] = boostId,  -- Use dynamic Boost ID
                 [2] = 5  -- Amount
             }
             game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
@@ -67,7 +81,7 @@ buttons.Eggs.MouseButton1Click:Connect(function()
         end
     end)
 
-    -- Stop Rolling Eggs on second click
+    -- Stop Eggs on second click
     buttons.Eggs.MouseButton1Click:Connect(function()
         runningEggs = false
         buttons.Eggs.Text = "Roll Eggs"
@@ -88,7 +102,7 @@ buttons.Valentine.MouseButton1Click:Connect(function()
         end
     end)
 
-    -- Stop Valentine Event on second click
+    -- Stop Valentine event on second click
     buttons.Valentine.MouseButton1Click:Connect(function()
         runningValentine = false
         buttons.Valentine.Text = "Valentine Event"
@@ -96,4 +110,4 @@ buttons.Valentine.MouseButton1Click:Connect(function()
     end)
 end)
 
-print("GUI with Boost Bundle, Eggs, and Valentine functionality should now work.")
+print("GUI with Boost Bundle functionality should now work.")

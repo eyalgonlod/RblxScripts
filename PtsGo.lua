@@ -43,71 +43,71 @@ local function getBoostBundleId()
 end
 
 -- Boost Bundle button function
-local isBoostRunning = false
 buttons.BoostBundle.MouseButton1Click:Connect(function()
-    if not isBoostRunning then
-        isBoostRunning = true
-        buttons.BoostBundle.Text = "Stop Boost Bundle"
-        buttons.BoostBundle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    local runningBoost = true
+    buttons.BoostBundle.Text = "Stop Boost Bundle"
+    buttons.BoostBundle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
-        task.spawn(function()
-            while isBoostRunning do
-                local boostId = getBoostBundleId()  -- Fetch the dynamic Boost ID
-                local args5 = {
-                    [1] = boostId,  -- Use dynamic Boost ID
-                    [2] = 50  -- Amount
-                }
-                game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
-                task.wait(0.01)
-            end
-        end)
-    else
-        isBoostRunning = false
+    task.spawn(function()
+        while runningBoost do
+            local boostId = getBoostBundleId()  -- Fetch the dynamic Boost ID
+            local args5 = {
+                [1] = boostId,  -- Use dynamic Boost ID
+                [2] = 5  -- Amount
+            }
+            game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
+            task.wait(0.01)
+        end
+    end)
+
+    -- Stop Boost Bundle on second click
+    buttons.BoostBundle.MouseButton1Click:Connect(function()
+        runningBoost = false
         buttons.BoostBundle.Text = "Boost Bundle"
         buttons.BoostBundle.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-    end
+    end)
 end)
 
 -- Eggs button function
-local isEggsRunning = false
 buttons.Eggs.MouseButton1Click:Connect(function()
-    if not isEggsRunning then
-        isEggsRunning = true
-        buttons.Eggs.Text = "Stop Rolling Eggs"
-        buttons.Eggs.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    local runningEggs = true
+    buttons.Eggs.Text = "Stop Rolling Eggs"
+    buttons.Eggs.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
-        task.spawn(function()
-            while isEggsRunning do
-                game:GetService("ReplicatedStorage").Network.Eggs_Roll:InvokeServer()
-                task.wait(0.2)
-            end
-        end)
-    else
-        isEggsRunning = false
+    task.spawn(function()
+        while runningEggs do
+            game:GetService("ReplicatedStorage").Network.Eggs_Roll:InvokeServer()
+            task.wait(0.2)
+        end
+    end)
+
+    -- Stop Eggs on second click
+    buttons.Eggs.MouseButton1Click:Connect(function()
+        runningEggs = false
         buttons.Eggs.Text = "Roll Eggs"
         buttons.Eggs.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-    end
+    end)
 end)
 
 -- Valentine button function
-local isValentineRunning = false
 buttons.Valentine.MouseButton1Click:Connect(function()
-    if not isValentineRunning then
-        isValentineRunning = true
-        buttons.Valentine.Text = "Stop Valentine Event"
-        buttons.Valentine.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    local runningValentine = true
+    buttons.Valentine.Text = "Stop Valentine Event"
+    buttons.Valentine.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
-        task.spawn(function()
-            while isValentineRunning do
-                game:GetService("ReplicatedStorage").Network.Board_Roll:InvokeServer("Valentines")
-                task.wait(0.2)
-            end
-        end)
-    else
-        isValentineRunning = false
+    task.spawn(function()
+        while runningValentine do
+            game:GetService("ReplicatedStorage").Network.Board_Roll:InvokeServer("Valentines")
+            task.wait(0.2)
+        end
+    end)
+
+    -- Stop Valentine event on second click
+    buttons.Valentine.MouseButton1Click:Connect(function()
+        runningValentine = false
         buttons.Valentine.Text = "Valentine Event"
         buttons.Valentine.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-    end
+    end)
 end)
 
 print("GUI with Boost Bundle functionality should now work.")

@@ -5,7 +5,7 @@ ScreenGui.Parent = game:GetService("CoreGui")
 -- Create a black frame to hold all buttons
 local GuiFrame = Instance.new("Frame")
 GuiFrame.Parent = ScreenGui
-GuiFrame.Size = UDim2.new(0, 200, 0, 360)  -- Set the size of the frame
+GuiFrame.Size = UDim2.new(0, 200, 0, 240)  -- Adjusted the size for fewer buttons
 GuiFrame.Position = UDim2.new(1, -210, 0.1, 0)  -- Position the frame on the right side
 GuiFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Black background color
 
@@ -22,14 +22,11 @@ local function createButton(name, position, text)
     return button
 end
 
--- Create all the buttons
+-- Create the remaining buttons
 local buttons = {
-    BasicChest = createButton("BasicChest", 0.1, "Basic Chest"),
-    RareChest = createButton("RareChest", 0.2, "Rare Chest"),
-    EpicChest = createButton("EpicChest", 0.3, "Epic Chest"),
-    BoostBundle = createButton("BoostBundle", 0.4, "Boost Bundle"),
-    Eggs = createButton("Eggs", 0.5, "Roll Eggs"),
-    Valentine = createButton("Valentine", 0.6, "Valentine Event")
+    BoostBundle = createButton("BoostBundle", 0.1, "Boost Bundle"),
+    Eggs = createButton("Eggs", 0.2, "Roll Eggs"),
+    Valentine = createButton("Valentine", 0.3, "Valentine Event")
 }
 
 -- Set up the function to toggle the buttons
@@ -63,7 +60,7 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
                 -- Execute the Boost Bundle action repeatedly
                 local args5 = {
                     [1] = "a136a7ba64bb4395bb99a6de8fe20c99", -- Bundle for boosts
-                    [2] = 50  -- Amount
+                    [2] = 5  -- Amount
                 }
                 game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
                 task.wait(0.01)
@@ -73,11 +70,6 @@ buttons.BoostBundle.MouseButton1Click:Connect(function()
 end)
 
 -- Add button click events to handle the toggles
-buttons.BasicChest.MouseButton1Click:Connect(function() toggleFunction(buttons.BasicChest, "d2f11dcd329c4512a1963d9e016b255e", 1) end)
-buttons.RareChest.MouseButton1Click:Connect(function() toggleFunction(buttons.RareChest, "0fed0d87569b48058effcc67f49e4447", 1) end)
-buttons.EpicChest.MouseButton1Click:Connect(function() toggleFunction(buttons.EpicChest, "edb8b4dfd9a347669c5072c12e65df1a", 1) end)
-
--- Add events for Eggs and Valentine buttons
 buttons.Eggs.MouseButton1Click:Connect(function()
     running["Eggs"] = not running["Eggs"]
     buttons.Eggs.Text = running["Eggs"] and "Stop Rolling Eggs" or "Roll Eggs"
@@ -108,4 +100,4 @@ buttons.Valentine.MouseButton1Click:Connect(function()
     end
 end)
 
-print("GUI with Boost Bundle functionality should now work.")
+print("GUI with Boost Bundle, Eggs, and Valentine functionality should now work.")

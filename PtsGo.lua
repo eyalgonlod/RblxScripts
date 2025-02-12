@@ -5,7 +5,7 @@ ScreenGui.Parent = game:GetService("CoreGui")
 -- Create a black frame to hold all buttons
 local GuiFrame = Instance.new("Frame")
 GuiFrame.Parent = ScreenGui
-GuiFrame.Size = UDim2.new(0, 200, 0, 240)  -- Adjusted the size for fewer buttons
+GuiFrame.Size = UDim2.new(0, 200, 0, 300)  -- Adjusted the size for fewer buttons and more spacing
 GuiFrame.Position = UDim2.new(1, -210, 0.1, 0)  -- Position the frame on the right side
 GuiFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Black background color
 
@@ -22,82 +22,78 @@ local function createButton(name, position, text)
     return button
 end
 
--- Create the remaining buttons
+-- Create the remaining buttons with more space between them
 local buttons = {
     BoostBundle = createButton("BoostBundle", 0.1, "Boost Bundle"),
-    Eggs = createButton("Eggs", 0.2, "Roll Eggs"),
-    Valentine = createButton("Valentine", 0.3, "Valentine Event")
+    Eggs = createButton("Eggs", 0.25, "Roll Eggs"),
+    Valentine = createButton("Valentine", 0.4, "Valentine Event")
 }
 
--- Set up the function to toggle the buttons
-local running = {}
-
-local function toggleFunction(button, id, amount)
-    running[id] = not running[id]
-    button.Text = running[id] and "Stop " .. button.Text or button.Text:gsub("Stop ", "")
-    button.BackgroundColor3 = running[id] and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
-
-    if running[id] then
-        task.spawn(function()
-            while running[id] do
-                -- Call the ReplicatedStorage API to perform the action
-                game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(id, amount)
-                task.wait(0.1)
-            end
-        end)
-    end
-end
-
--- Modify Boost Bundle button behavior
+-- Boost Bundle button function
 buttons.BoostBundle.MouseButton1Click:Connect(function()
-    running["BoostBundle"] = not running["BoostBundle"]
-    buttons.BoostBundle.Text = running["BoostBundle"] and "Stop Boost Bundle" or "Boost Bundle"
-    buttons.BoostBundle.BackgroundColor3 = running["BoostBundle"] and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
-    
-    if running["BoostBundle"] then
-        task.spawn(function()
-            while running["BoostBundle"] do
-                -- Execute the Boost Bundle action repeatedly
-                local args5 = {
-                    [1] = "a136a7ba64bb4395bb99a6de8fe20c99", -- Bundle for boosts
-                    [2] = 5  -- Amount
-                }
-                game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
-                task.wait(0.01)
-            end
-        end)
-    end
+    local runningBoost = true
+    buttons.BoostBundle.Text = "Stop Boost Bundle"
+    buttons.BoostBundle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+
+    task.spawn(function()
+        while runningBoost do
+            local args5 = {
+                [1] = "a136a7ba64bb4395bb99a6de8fe20c99", -- Bundle for boosts
+                [2] = 5  -- Amount
+            }
+            game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbox: Open"):InvokeServer(unpack(args5))
+            task.wait(0.01)
+        end
+    end)
+
+    -- Stop Boost Bundle on second click
+    buttons.BoostBundle.MouseButton1Click:Connect(function()
+        runningBoost = false
+        buttons.BoostBundle.Text = "Boost Bundle"
+        buttons.BoostBundle.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+    end)
 end)
 
--- Add button click events to handle the toggles
+-- Eggs button function
 buttons.Eggs.MouseButton1Click:Connect(function()
-    running["Eggs"] = not running["Eggs"]
-    buttons.Eggs.Text = running["Eggs"] and "Stop Rolling Eggs" or "Roll Eggs"
-    buttons.Eggs.BackgroundColor3 = running["Eggs"] and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
+    local runningEggs = true
+    buttons.Eggs.Text = "Stop Rolling Eggs"
+    buttons.Eggs.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
-    if running["Eggs"] then
-        task.spawn(function()
-            while running["Eggs"] do
-                game:GetService("ReplicatedStorage").Network.Eggs_Roll:InvokeServer()
-                task.wait(0.2)
-            end
-        end)
-    end
+    task.spawn(function()
+        while runningEggs do
+            game:GetService("ReplicatedStorage").Network.Eggs_Roll:InvokeServer()
+            task.wait(0.2)
+        end
+    end)
+
+    -- Stop Rolling Eggs on second click
+    buttons.Eggs.MouseButton1Click:Connect(function()
+        runningEggs = false
+        buttons.Eggs.Text = "Roll Eggs"
+        buttons.Eggs.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+    end)
 end)
 
+-- Valentine button function
 buttons.Valentine.MouseButton1Click:Connect(function()
-    running["Valentine"] = not running["Valentine"]
-    buttons.Valentine.Text = running["Valentine"] and "Stop Valentine Event" or "Valentine Event"
-    buttons.Valentine.BackgroundColor3 = running["Valentine"] and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(255, 140, 0)
+    local runningValentine = true
+    buttons.Valentine.Text = "Stop Valentine Event"
+    buttons.Valentine.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
-    if running["Valentine"] then
-        task.spawn(function()
-            while running["Valentine"] do
-                game:GetService("ReplicatedStorage").Network.Board_Roll:InvokeServer("Valentines")
-                task.wait(0.2)
-            end
-        end)
-    end
+    task.spawn(function()
+        while runningValentine do
+            game:GetService("ReplicatedStorage").Network.Board_Roll:InvokeServer("Valentines")
+            task.wait(0.2)
+        end
+    end)
+
+    -- Stop Valentine Event on second click
+    buttons.Valentine.MouseButton1Click:Connect(function()
+        runningValentine = false
+        buttons.Valentine.Text = "Valentine Event"
+        buttons.Valentine.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+    end)
 end)
 
 print("GUI with Boost Bundle, Eggs, and Valentine functionality should now work.")
